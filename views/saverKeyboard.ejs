@@ -1,0 +1,952 @@
+<!doctype html>
+<html>
+    <head>
+        <script>
+            const keyCodes = [
+	{'symb':'1', 'numb':49},
+	{'symb':'2', 'numb':50},
+	{'symb':'3', 'numb':51},
+	{'symb':'4', 'numb':52},
+	{'symb':'5', 'numb':53},
+	{'symb':'6', 'numb':54},
+	{'symb':'7', 'numb':55},
+	{'symb':'8', 'numb':56},
+	{'symb':'9', 'numb':57},
+	{'symb':'0', 'numb':48},
+
+
+              {'symb':'Q', 'numb':81},
+              {'symb':'W', 'numb':87},
+              {'symb':'E', 'numb':69},
+              {'symb':'R', 'numb':82},
+              {'symb':'T', 'numb':84},
+              {'symb':'Y', 'numb':89},
+              {'symb':'U', 'numb':85},
+              {'symb':'I', 'numb':73},
+              {'symb':'O', 'numb':79},
+              {'symb':'P', 'numb':80},
+    	  
+              {'symb':'A', 'numb':65},
+              {'symb':'S', 'numb':83},
+              {'symb':'D', 'numb':68},
+              {'symb':'F', 'numb':70},
+              {'symb':'G', 'numb':71},
+              {'symb':'H', 'numb':72},
+              {'symb':'J', 'numb':74},
+              {'symb':'K', 'numb':75},
+              {'symb':'L', 'numb':76},
+              {'symb':': ;', 'numb':186},
+
+    
+              {'symb':'Z', 'numb':90},
+              {'symb':'X', 'numb':88},
+              {'symb':'C', 'numb':67},
+              {'symb':'V', 'numb':86},
+              {'symb':'B', 'numb':66},
+              {'symb':'N', 'numb':78},
+              {'symb':'M', 'numb':77},
+              {'symb':'< ,', 'numb':188},
+		{'symb':'> .', 'numb':190},
+              {'symb':'? /', 'numb':191},
+
+
+
+            ];
+	const keyboards = document.getElementsByClassName('keyboards');
+
+		document.addEventListener('DOMContentLoaded', () => {
+		for (let i = 0; i < 40; i++) {
+			keyboards[i].innerText = keyCodes[i].symb;
+			fractions[i].innerText = secretArray[0];
+			decimals[i].innerText = eval(secretArray[0]);
+			frequencies[i].innerText = standardPitch.value* eval(secretArray[0])
+			tilesPositions[i].innerText = 0;
+		}
+	});
+    
+</script>
+<style>
+:root {
+	--lamp:#f0bc2e;
+
+}
+ body, html {
+	margin:0;
+	display:grid;
+	height:100vh;
+}
+	#mockTable {
+		grid-column:1 / 3;
+		grid-row:1 / 5;
+		height:50vh;
+		overflow-y:scroll;
+		display:grid;
+		grid-template-columns:auto auto auto;
+	} #interface {
+		grid-column:3 / 9;
+		grid-row:1 / 6;
+		height:50vh;	
+	} #controls {
+		grid-column:1 / 3;
+		grid-row:5 / 9;
+		height:45vh;
+	} #lock {
+		grid-column:3 / 9;
+		grid-row:6 / 8;
+		height:20vh;
+	}
+
+
+
+     #interface {
+	display:grid;
+	grid-template-columns:auto auto auto auto auto auto auto auto auto auto;
+
+    }
+
+     .interfaceTiles {
+	height:6em;
+	border:solid 1px var(--lamp);
+	margin:0;
+	display:flex;
+	flex-direction:column;
+	justify-content:space-between;
+    } .keyboards, .fractions, .decimals, .frequencies, .tilesPositions {
+	text-align:center;
+    } .keyboards {
+	background:var(--lamp);
+	color:white;
+	font-family:sans-serif;
+	border:solid 2px black;
+    }
+
+
+    #standardPitch, #limit, #theName, #theMeta {
+	width:5em;
+    }
+     .mockTableFractions {
+	cursor:pointer;
+	color:white;
+	background:var(--lamp);
+	font-family:sans-serif;
+	border:solid 2px black;
+     } .mockTableDecimals {
+	background:white;
+	overflow:hidden;
+	width:7em;
+     }
+	#skeleton {
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		border:solid 1px black;
+		height:10vh;
+		overflow-x:scroll;
+		width:75vw;
+	} .bones, .positions, .bonesDecimals {
+		width:4em;
+		text-align:center;
+		border:solid 1px black;
+		overflow:hidden;
+	} li {
+		border:solid 1px black;
+	} 
+
+	.retrievedContainers {
+		border:solid 1px black;
+		display:flex;
+		justify-content:space-around;
+	} .retrievedCreators, .retrievedNames {
+		width:10vw;	
+	} .retrievedScales {
+		width:55vw;
+		overflow-x:scroll;
+		cursor:pointer;
+	}
+	</style>
+</head>
+<body>
+	<div id='mockTable'>&nbsp;</div>
+	<section id='interface'>
+		<% for (let i = 0; i < 40; i++) { %>
+
+			<article data-index='<%=i%>' class='interfaceTiles'>
+  				<div class='keyboards'></div>
+				<div class='fractions'></div>
+				<div class='decimals'></div>
+				<div class='frequencies'></div>
+				<div class='tilesPositions'></div>
+			</article>
+		<% } %>
+	</section>
+	<ol id='controls'>
+		<li>
+			<button id='init'>begin</button>
+		</li>
+		<li>
+			<button id='generateRatios'>generate Ratios</button><br/>
+			<input type='number' id='limit' value='100'>
+		</li>
+		<li>
+			standard pitch<br/>
+			<input type='number' id='standardPitch' value='216'>
+		</li>
+		<li>
+			position:<input id='position'><br/>
+			ratio:<input id='ratio'><br/>
+			<button id='addRatio'>add ratio</button>
+			<button id='replaceRatio'>replace ratio</button>
+			<button id='deleteRatio'>delete ratio</button>
+
+		</li>
+		<li>
+			<button id='automap'>auto map</button>
+		</li>
+		<li>
+				name:<input id='theName'><br/>
+				creator:<input id='theCreator'><br/>
+				password:<input id='thePassword'><br/>
+				<button id='submitScale'>submit scale</button>
+				<button id='updateScale'>update scale</button>
+				<button id='deleteScale'>delete scale</button><br/>
+				<button id='getScales'>get scales</button><br/>
+
+		</li>
+	</ol>
+	<section id='lock'>
+		<div id='skeleton'>
+			<article class='coffins'>
+				<div class='positions'>0</div>
+				<div class='bones'>1/1</div>
+				<div class='bonesDecimals'>1</div>
+			</article>
+		</div>
+		<div id='ward'>
+			
+		</div>
+	</section>
+
+</body>
+<script>
+	const theName = document.getElementById('theName');
+	const theCreator = document.getElementById('theCreator');
+	const thePassword = document.getElementById('thePassword');
+
+
+	document.getElementById('submitScale').addEventListener('click', () => {
+
+	let bag = [];
+
+		for (let i = 0; i < bones.length; i++) {
+			bag.push(bones[i].textContent);
+		}
+
+		bag = bag.toString();	
+	
+			fetch('/submitScale', {
+					method:'POST',
+					mode:'cors',
+					headers: {
+						'Content-type': 'application/json',
+					},
+					body:JSON.stringify({
+							'theScale':bag,
+							'theName':theName.value,
+							'theCreator':theCreator.value,
+							'thePassword':thePassword.value
+						})
+				});
+
+
+		
+	
+	});
+
+	document.getElementById('updateScale').addEventListener('click', () => {
+
+	let bag = [];
+
+		for (let i = 0; i < bones.length; i++) {
+			bag.push(bones[i].textContent);
+		}
+
+		bag = bag.toString();	
+	
+			fetch('/updateScale', {
+					method:'POST',
+					mode:'cors',
+					headers: {
+						'Content-type': 'application/json',
+					},
+					body:JSON.stringify({
+							'theScale':bag,
+							'theName':theName.value,
+							'theCreator':theCreator.value,
+							'thePassword':thePassword.value
+						})
+				});
+	
+	});
+
+	document.getElementById('deleteScale').addEventListener('click', () => {
+			fetch('/deleteScale', {
+					method:'POST',
+					mode:'cors',
+					headers: {
+						'Content-type': 'application/json',
+					},
+					body:JSON.stringify({
+							'theName':theName.value,
+							'theCreator':theCreator.value,
+							'thePassword':thePassword.value
+						})
+				});
+
+
+	});
+
+	document.getElementById('getScales').addEventListener('click', () => {
+			fetch('/getScales') 
+				.then(response => response.json())	
+				.then(data => {
+					for (let i = 0; i < data.length; i++) {
+						let container = document.createElement('article');
+						let creatorElement = document.createElement('div');
+						let nameElement = document.createElement('div');
+						let scaleElement = document.createElement('div');
+
+						container.setAttribute('class', 'retrievedContainers');
+						creatorElement.setAttribute('class', 'retrievedCreators');
+						nameElement.setAttribute('class', 'retrievedNames');
+						scaleElement.setAttribute('class', 'retrievedScales');
+						scaleElement.setAttribute('data-retrievedScaleIndices', `${i}`);
+
+
+						creatorElement.append(data[i].theCreator);
+						nameElement.append(data[i].theName);
+						scaleElement.append(data[i].theScale.split(',').join(', '));
+
+						ward.append(container);
+						container.append(creatorElement);
+						container.append(nameElement);
+						container.append(scaleElement);
+
+					}
+				});
+	});
+
+
+
+	const standardPitch = document.getElementById('standardPitch');
+	const bones = document.getElementsByClassName('bones');
+	const bonesDecimals = document.getElementsByClassName('bonesDecimals');
+	const fractions = document.getElementsByClassName('fractions');
+	const decimals = document.getElementsByClassName('decimals');
+	const frequencies = document.getElementsByClassName('frequencies');
+	const tilesPositions = document.getElementsByClassName('tilesPositions');
+	const positions = document.getElementsByClassName('positions');
+
+
+
+	document.getElementById('automap').addEventListener('click', () => {
+			for (let i = 0; i < bones.length; i++) {
+				fractions[i].innerText = bones[i].textContent;
+				decimals[i].innerText = eval(bones[i].textContent).toPrecision(6)
+					.replace(/0+$/, '').replace(/\.$/, '');
+				frequencies[i].innerText = eval(standardPitch.value* eval(bones[i].textContent)).toPrecision(6)
+					.replace(/0+$/, '').replace(/\.$/, '');
+				tilesPositions[i].innerText = i;
+			}
+	});
+
+
+	const skeleton = document.getElementById('skeleton');
+	const position = document.getElementById('position');
+	const ratio = document.getElementById('ratio');
+
+	let secretArray = ['1/1'];
+
+	document.getElementById('addRatio').addEventListener('click', () => {
+			let articleElement = document.createElement('article');
+			let positionElement = document.createElement('div');
+			let bonesElement = document.createElement('div');
+			let bonesDecimalsElement = document.createElement('div');
+			
+			articleElement.setAttribute('class', 'coffins');
+			positionElement.setAttribute('class', 'positions');
+			bonesElement.setAttribute('class', 'bones');
+			bonesDecimalsElement.setAttribute('class', 'bonesDecimals');
+
+			skeleton.appendChild(articleElement);
+			articleElement.appendChild(positionElement);
+			articleElement.appendChild(bonesElement);
+			articleElement.appendChild(bonesDecimalsElement);
+
+			secretArray.splice(position.value, 0, ratio.value);
+				for (let i = 0; i < secretArray.length; i++) {
+					bones[i].innerText = secretArray[i];
+					positions[i].innerText = i;
+					bonesDecimals[i].innerText = eval(secretArray[i]).toPrecision(6)
+						.replace(/0+$/, '').replace(/\.$/, '');
+				}
+
+	});
+	
+
+	document.getElementById('replaceRatio').addEventListener('click', () => {
+		secretArray.splice(position.value, 1, ratio.value);
+		
+		for (let i = 0; i < secretArray.length; i++) {
+			bones[i].innerText = secretArray[i];
+			bonesDecimals[i].innerText = eval(secretArray[i]).toPrecision(6)
+						.replace(/0+$/, '').replace(/\.$/, '');
+
+			}
+	});
+
+	document.getElementById('deleteRatio').addEventListener('click', () => {
+		secretArray.splice(position.value, 1);
+		for (let i = 0; i < bones.length; i++) {
+			positions[i].innerText = i;
+			bones[i].innerText = secretArray[i];
+			bonesDecimals[i].innerText = eval(secretArray[i]);
+			bonesDecimals[i].innerText = eval(secretArray[i]).toPrecision(6)
+						.replace(/0+$/, '').replace(/\.$/, '');
+
+		}
+
+		skeleton.removeChild(skeleton.lastChild);	
+	});
+
+
+	const theScale = document.getElementById('theScale');
+	const limit = document.getElementById('limit');
+
+	document.getElementById('generateRatios').addEventListener('click', generate);
+
+
+
+
+	function generate() {
+
+
+	
+		let ray = [];
+	
+		for (let i = 0; i < limit.value; i++) {
+			for (let j = 0; j < limit.value; j++) {
+				if (i/j <= 2 && i/j >= .5) {	
+					ray.push({numerator:i, denominator:j, product:i/j})		
+				}
+			}
+		}
+
+		let swap;
+
+		for (let i = 0; i < ray.length; i++) {
+			for (let j = 1; j < ray.length; j++) {
+				if (ray[j].product < ray[j-1].product) {
+					swap = ray[j];
+					ray[j] = ray[j-1]
+					ray[j-1] = swap;
+				}
+			}
+		}
+
+		for (let i = 0; i < ray.length; i++) {
+
+			let frequency = document.createElement('div');
+			let frequencyText = document.createTextNode(`${eval(standardPitch.value* ray[i].product).toFixed(5)}`);
+			frequency.appendChild(frequencyText);
+			mockTable.appendChild(frequency);
+
+
+
+			let fraction = document.createElement('div');
+			let fractionText = document.createTextNode(`${ray[i].numerator}/${ray[i].denominator}`);
+			fraction.appendChild(fractionText);
+			mockTable.appendChild(fraction);
+
+
+			let product = document.createElement('div');
+			let productText = document.createTextNode(ray[i].product.toFixed(5));
+			product.appendChild(productText);
+			mockTable.appendChild(product);
+
+
+		}	
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	let atx;
+	document.getElementById('init').onclick = () => atx = new AudioContext();
+
+let osc0, osc1, osc2, osc3, osc4, osc5, osc6, osc7, osc8, osc9,
+osc10, osc11, osc12, osc13, osc14, osc15, osc16, osc17, osc18,
+osc19, osc20, osc21, osc22, osc23, osc24, osc25, osc26, osc27, 
+osc28, osc29, osc30, osc31, osc32, osc33, osc34, osc35, osc36, 
+osc37, osc38, osc39;
+
+let vol0, vol1, vol2, vol3, vol4, vol5, vol6, vol7, vol8, vol9, 
+vol10, vol11, vol12, vol13, vol14, vol15, vol16, vol17, vol18, 
+vol19, vol20, vol21, vol22, vol23, vol24, vol25, vol26, vol27, 
+vol28, vol29, vol30, vol31, vol32, vol33, vol34, vol35, vol36, 
+vol37, vol38, vol39;
+      
+      class Music {
+	  constructor(osc, vol, index) {
+	      this.osc = osc;
+	      this.vol = vol;
+	      this.index = index;
+	      this.playing = false;
+	  }
+
+	  awn() {
+	      if (this.playing === false) {
+		  this.osc = atx.createOscillator();
+		  this.vol = atx.createGain();
+		  this.osc.frequency.value = eval(frequencies[this.index].textContent);
+		  this.vol.gain.value = .1;
+		  this.osc.connect(this.vol).connect(atx.destination);
+		  this.osc.start(0);
+		  this.playing = true;
+		  document.querySelectorAll('[data-index]')[this.index].style.border = 'solid 2px black';
+	      }
+	  }
+	  auf() {
+	      this.osc.stop(0);
+	      this.playing = false;
+	      document.querySelectorAll('[data-index]')[this.index].style.border = 'solid 2px white';
+	  }
+      }
+      
+      let notes = [
+      new Music(osc0, vol0, 0),
+      new Music(osc1, vol1, 1),
+      new Music(osc2, vol2, 2),
+new Music(osc3, vol3, 3),
+new Music(osc4, vol4, 4),
+new Music(osc5, vol5, 5),
+new Music(osc6, vol6, 6),
+new Music(osc7, vol7, 7),
+new Music(osc8, vol8, 8),
+new Music(osc9, vol9, 9),
+new Music(osc10, vol10, 10),
+new Music(osc11, vol11, 11),
+new Music(osc12, vol12, 12),
+new Music(osc13, vol13, 13),
+new Music(osc14, vol14, 14),
+new Music(osc15, vol15, 15),
+new Music(osc16, vol16, 16),
+new Music(osc17, vol17, 17),
+new Music(osc18, vol18, 18),
+new Music(osc19, vol19, 19),
+new Music(osc20, vol20, 20),
+new Music(osc21, vol21, 21),
+new Music(osc22, vol22, 22),
+new Music(osc23, vol23, 23),
+new Music(osc24, vol24, 24),
+      new Music(osc25, vol25, 25),
+      new Music(osc25, vol25, 26),
+      new Music(osc25, vol25, 27),
+       new Music(osc25, vol25, 28),
+     new Music(osc25, vol25, 29),
+     new Music(osc25, vol25, 30),
+     new Music(osc25, vol25, 31),
+     new Music(osc25, vol25, 32),
+     new Music(osc25, vol25, 33),
+     new Music(osc25, vol25, 34),
+     new Music(osc25, vol25, 35),
+     new Music(osc25, vol25, 36),
+     new Music(osc25, vol25, 37),
+     new Music(osc25, vol25, 38),
+     new Music(osc25, vol25, 39),
+
+      ];
+
+
+      window.addEventListener('keydown', e => {
+      switch(e.keyCode) {
+
+case keyCodes[0].numb:
+notes[0].awn()
+break;
+case keyCodes[1].numb:
+notes[1].awn()
+break;
+case keyCodes[2].numb:
+notes[2].awn()
+break;
+case keyCodes[3].numb:
+notes[3].awn()
+break;
+case keyCodes[4].numb:
+notes[4].awn()
+break;
+case keyCodes[5].numb:
+notes[5].awn()
+break;
+case keyCodes[6].numb:
+notes[6].awn()
+break;
+case keyCodes[7].numb:
+notes[7].awn()
+break;
+case keyCodes[8].numb:
+notes[8].awn()
+break;
+case keyCodes[9].numb:
+notes[9].awn()
+break;
+case keyCodes[10].numb:
+notes[10].awn()
+break;
+case keyCodes[11].numb:
+notes[11].awn()
+break;
+case keyCodes[12].numb:
+notes[12].awn()
+break;
+case keyCodes[13].numb:
+notes[13].awn()
+break;
+case keyCodes[14].numb:
+notes[14].awn()
+break;
+case keyCodes[15].numb:
+notes[15].awn()
+break;
+case keyCodes[16].numb:
+notes[16].awn()
+break;
+case keyCodes[17].numb:
+notes[17].awn()
+break;
+case keyCodes[18].numb:
+notes[18].awn()
+break;
+case keyCodes[19].numb:
+notes[19].awn()
+break;
+case keyCodes[20].numb:
+notes[20].awn()
+break;
+case keyCodes[21].numb:
+notes[21].awn()
+break;
+case keyCodes[22].numb:
+notes[22].awn()
+break;
+case keyCodes[23].numb:
+notes[23].awn()
+break;
+case keyCodes[24].numb:
+notes[24].awn()
+break;
+case keyCodes[25].numb:
+notes[25].awn()
+break;
+case keyCodes[26].numb:
+notes[26].awn()
+break;
+case keyCodes[27].numb:
+notes[27].awn()
+break;
+case keyCodes[28].numb:
+notes[28].awn()
+break;
+case keyCodes[29].numb:
+notes[29].awn()
+break;
+case keyCodes[30].numb:
+notes[30].awn()
+break;
+case keyCodes[31].numb:
+notes[31].awn()
+break;
+case keyCodes[32].numb:
+notes[32].awn()
+break;
+case keyCodes[33].numb:
+notes[33].awn()
+break;
+case keyCodes[34].numb:
+notes[34].awn()
+break;
+case keyCodes[35].numb:
+notes[35].awn()
+break;
+case keyCodes[36].numb:
+notes[36].awn()
+break;
+case keyCodes[37].numb:
+notes[37].awn()
+break;
+case keyCodes[38].numb:
+notes[38].awn()
+break;
+case keyCodes[39].numb:
+notes[39].awn()
+break;
+
+      
+      }
+      });
+
+      
+      window.addEventListener('keyup', e => {
+      switch(e.keyCode) {
+
+case keyCodes[0].numb:
+notes[0].auf()
+break;
+case keyCodes[1].numb:
+notes[1].auf()
+break;
+case keyCodes[2].numb:
+notes[2].auf()
+break;
+case keyCodes[3].numb:
+notes[3].auf()
+break;
+case keyCodes[4].numb:
+notes[4].auf()
+break;
+case keyCodes[5].numb:
+notes[5].auf()
+break;
+case keyCodes[6].numb:
+notes[6].auf()
+break;
+case keyCodes[7].numb:
+notes[7].auf()
+break;
+case keyCodes[8].numb:
+notes[8].auf()
+break;
+case keyCodes[9].numb:
+notes[9].auf()
+break;
+case keyCodes[10].numb:
+notes[10].auf()
+break;
+case keyCodes[11].numb:
+notes[11].auf()
+break;
+case keyCodes[12].numb:
+notes[12].auf()
+break;
+case keyCodes[13].numb:
+notes[13].auf()
+break;
+case keyCodes[14].numb:
+notes[14].auf()
+break;
+case keyCodes[15].numb:
+notes[15].auf()
+break;
+case keyCodes[16].numb:
+notes[16].auf()
+break;
+case keyCodes[17].numb:
+notes[17].auf()
+break;
+case keyCodes[18].numb:
+notes[18].auf()
+break;
+case keyCodes[19].numb:
+notes[19].auf()
+break;
+case keyCodes[20].numb:
+notes[20].auf()
+break;
+case keyCodes[21].numb:
+notes[21].auf()
+break;
+case keyCodes[22].numb:
+notes[22].auf()
+break;
+case keyCodes[23].numb:
+notes[23].auf()
+break;
+case keyCodes[24].numb:
+notes[24].auf()
+break;
+case keyCodes[25].numb:
+notes[25].auf()
+break;
+case keyCodes[26].numb:
+notes[26].auf()
+break;
+case keyCodes[27].numb:
+notes[27].auf()
+break;
+case keyCodes[28].numb:
+notes[28].auf()
+break;
+case keyCodes[29].numb:
+notes[29].auf()
+break;
+case keyCodes[30].numb:
+notes[30].auf()
+break;
+case keyCodes[31].numb:
+notes[31].auf()
+break;
+case keyCodes[32].numb:
+notes[32].auf()
+break;
+case keyCodes[33].numb:
+notes[33].auf()
+break;
+case keyCodes[34].numb:
+notes[34].auf()
+break;
+case keyCodes[35].numb:
+notes[35].auf()
+break;
+case keyCodes[36].numb:
+notes[36].auf()
+break;
+case keyCodes[37].numb:
+notes[37].auf()
+break;
+case keyCodes[38].numb:
+notes[38].auf()
+break;
+case keyCodes[39].numb:
+notes[39].auf()
+break;
+
+
+
+      
+      }
+      });
+
+let osc, vol;
+	mockTable.addEventListener('mouseover', e => {
+		if (eval(e.target.textContent) <= 2) {
+			osc = atx.createOscillator();
+			vol = atx.createGain();
+			vol.gain.value = .1;
+			osc.frequency.value = standardPitch.value* eval(e.target.textContent);
+			osc.connect(vol).connect(atx.destination);
+			osc.start(0);
+		}
+	});
+
+	mockTable.addEventListener('mouseout', e => {
+		osc.stop(0);
+	});
+
+
+
+
+		document.getElementById('standardPitch').addEventListener('change', () => {
+			for (let i = 0; i < 30; i++) {
+				if (eval(frequencies[i].textContent) > 0) {
+		frequencies[i].innerText = eval(standardPitch.value* eval(fractions[i].textContent)).replace(/0+$/, '').replace(/\.$/, '');
+				}
+			}
+		});
+
+
+	let hotKeyCode, hotKeyIndex;
+
+	document.addEventListener('keydown', e => { 
+			hotKeyCode = e.keyCode;
+			for (let i = 0; i < 40; i++) {
+					if (e.keyCode === keyCodes[i].numb) {
+						hotKeyIndex = i;		
+					}
+			}
+		});
+
+	document.addEventListener('keydown', e => {
+
+		if (e.keyCode == 38) {
+	
+				tilesPositions[hotKeyIndex].innerText = eval(tilesPositions[hotKeyIndex].textContent) + 1;
+				fractions[hotKeyIndex].innerText = secretArray[eval(tilesPositions[hotKeyIndex].textContent)];
+	decimals[hotKeyIndex].innerText = eval(secretArray[eval(tilesPositions[hotKeyIndex].textContent)]).toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+frequencies[hotKeyIndex].innerText = eval(standardPitch.value* eval(secretArray[eval(tilesPositions[hotKeyIndex].textContent)])).toPrecision(6)
+					.replace(/0+$/, '').replace(/\.$/, '');
+
+
+		}
+
+	});
+
+	document.addEventListener('keydown', e => {
+
+		if (e.keyCode == 40) {
+	
+				tilesPositions[hotKeyIndex].innerText = eval(tilesPositions[hotKeyIndex].textContent) - 1;
+				fractions[hotKeyIndex].innerText = secretArray[eval(tilesPositions[hotKeyIndex].textContent)];
+				decimals[hotKeyIndex].innerText = eval(secretArray[eval(tilesPositions[hotKeyIndex].textContent)])
+				.toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+				frequencies[hotKeyIndex].innerText = standardPitch.value* eval(secretArray[eval(tilesPositions[hotKeyIndex].textContent)])
+				.toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+
+		}
+
+	});
+
+
+	const ward = document.getElementById('ward');
+	const retrievedScales = document.getElementsByClassName('retrievedScales');
+	
+	ward.addEventListener('click', e => {
+
+		let retrievedScaleIndex = eval(e.target.getAttribute('data-retrievedScaleIndices'));
+		let ray = retrievedScales[retrievedScaleIndex].textContent.split(',')
+
+		for (let i = 0; i < secretArray.length; i++) {
+
+			skeleton.removeChild(skeleton.firstElementChild)
+		}
+
+
+		for (let i = 0; i < ray.length; i++) {
+			secretArray[i] = ray[i];
+
+			let articleElement = document.createElement('article');
+			let positionElement = document.createElement('div');
+			let bonesElement = document.createElement('div');
+			let bonesDecimalsElement = document.createElement('div');
+
+			articleElement.setAttribute('class', 'coffins');
+			positionElement.setAttribute('class', 'positions');
+			bonesElement.setAttribute('class', 'bones');
+			bonesDecimalsElement.setAttribute('class', 'bonesDecimals');
+
+			positionElement.append(i);
+			bonesElement.append(ray[i]);
+			bonesDecimalsElement.append(eval(ray[i]));
+
+			skeleton.appendChild(articleElement);
+			articleElement.appendChild(positionElement);
+			articleElement.appendChild(bonesElement);
+			articleElement.appendChild(bonesDecimalsElement);
+
+		}
+
+		
+	});
+		
+	
+</script>
+</html>

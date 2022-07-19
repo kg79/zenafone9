@@ -1,0 +1,427 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <style>
+	:root {
+		--blush:#f20f6d;
+	}
+            html, body {
+                margin:0;
+                font-family:sans-serif;
+            } 
+           #toggler {
+		font-family:'Dancing Script', cursive;
+		font-size:150%;
+		background:black;
+		color:var(--blush);	
+		height:5vh;
+		display:flex;
+		justify-content:center;
+		align-items:center;
+	   } #controls{
+		display:none;
+		height:50vh;
+            }           
+            
+            #interface {
+                height:95vh;
+                display:grid;
+                grid-template-columns:auto auto auto auto;
+                user-select:none;
+            } .tiles {
+                outline:black 1px solid;
+                display:flex;
+                flex-direction:column;
+                width:25vw;
+                height:22.5vh;
+            } .indices, .ratios, .decimals, .frequencies {
+                text-align:center;
+                flex-grow:1;
+	    } #dbScaleArea {
+		
+	    } .containers {
+		display:flex;
+		border:solid 1px black;
+	    } .theScales {
+		width:70vw;	
+	    } .theCreators, .theNames {
+		width:15vw;
+		text-align:center;
+		border:solid 1px black;
+	    }
+	
+	</style>
+    </head>
+    <body>
+	 <section id='toggler'>
+		 controls
+	 </section>
+        <section id='controls'>
+		<button id='init'>init</button>
+		<div>starting frequency:<input id='stdPitch' value='216'></div>
+		<div>
+		<button id='getScales'>get scales</button>
+		</div>
+		<section id='dbScaleArea'>
+
+		</section>
+	</section>
+        <section id='interface'>
+            <article class='tiles' data-index=0>
+                <div class='indices'>0</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=1>
+                <div class='indices'>1</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=2>
+                <div class='indices'>2</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=3>
+                <div class='indices'>3</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=4>
+                <div class='indices'>4</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=5>
+                <div class='indices'>5</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=6>
+                <div class='indices'>6</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=7>
+                <div class='indices'>7</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=8>
+                <div class='indices'>8</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=9>
+                <div class='indices'>9</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=10>
+                <div class='indices'>10</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=11>
+                <div class='indices'>11</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=12>
+                <div class='indices'>12</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=13>
+                <div class='indices'>13</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=14>
+                <div class='indices'>14</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+            <article class='tiles' data-index=15>
+                <div class='indices'>15</div>
+                <div class='ratios'></div>
+                <div class='decimals'></div>
+                <div class='frequencies'></div>
+            </article>
+        </section>
+    </body>
+    <script>
+
+	const stdPitch = document.getElementById('stdPitch');
+
+        const tiles = document.getElementsByClassName('tiles');
+	const indices = document.getElementsByClassName('indices');
+        const ratios = document.getElementsByClassName('ratios');
+        const decimals = document.getElementsByClassName('decimals');
+        const frequencies = document.getElementsByClassName('frequencies');
+
+        let atx;
+
+	const init = document.getElementById('init');
+
+        init.addEventListener('click', () => {
+            atx = new AudioContext();
+        });
+
+
+        let osc0, osc1, osc2, osc3, osc4, osc5, osc6, osc7, osc8, osc9, osc10, osc11, osc12, osc13, osc14, osc15;
+        let vol0, vol1, vol2, vol3, vol4, vol5, vol6, vol7, vol8, vol9, vol10, vol11, vol12, vol13, vol14, vol15;
+
+        class Music {
+        constructor(osc, vol, index) {
+            this.osc = osc;
+            this.vol = vol;
+            this.index = index;
+            this.playing = false;
+        }
+
+        awn() {
+            if (this.playing === false) {
+                this.osc = atx.createOscillator();
+                this.vol = atx.createGain();
+                this.osc.frequency.value = eval(ratios[this.index].textContent) * stdPitch.value;
+                this.vol.gain.value = .1;
+                this.osc.connect(this.vol).connect(atx.destination);
+                this.osc.start(0);
+                    this.playing = true;
+                tiles[this.index].style.outline = 'solid 3px var(--blush)';
+            }
+        }
+        auf() {
+            this.osc.stop(0);
+                this.playing = false;
+            tiles[this.index].style.outline = 'solid 1px black';
+        }
+      }
+
+    let notes = [
+        new Music(osc0, vol0, 0),
+        new Music(osc1, vol1, 1),
+        new Music(osc2, vol2, 2),
+        new Music(osc3, vol3, 3),
+        new Music(osc4, vol4, 4),
+        new Music(osc5, vol5, 5),
+        new Music(osc6, vol6, 6),
+        new Music(osc7, vol7, 7),
+        new Music(osc8, vol8, 8),
+        new Music(osc9, vol9, 9),
+        new Music(osc10, vol10, 10),
+        new Music(osc11, vol11, 11),
+        new Music(osc12, vol12, 12),
+        new Music(osc13, vol13, 13),
+        new Music(osc14, vol14, 14),
+        new Music(osc15, vol15, 15),
+    ];
+
+    window.addEventListener('touchstart', e => {
+
+switch(eval(e.target.parentNode.getAttribute('data-index'))) {
+
+    case 0:
+    notes[0].awn();
+    break;
+    case 1:
+    notes[1].awn()
+    break;
+    case 2:
+    notes[2].awn()
+    break;
+    case 3:
+    notes[3].awn()
+    break;
+    case 4:
+    notes[4].awn()
+    break;
+    case 5:
+    notes[5].awn()
+    break;
+    case 6:
+    notes[6].awn()
+    break;
+    case 7:
+    notes[7].awn()
+    break;
+    case 8:
+    notes[8].awn()
+    break;
+    case 9:
+    notes[9].awn()
+    break;
+    case 10:
+    notes[10].awn()
+    break;
+    case 11:
+    notes[11].awn()
+    break;
+    case 12:
+    notes[12].awn()
+    break;
+    case 13:
+    notes[13].awn()
+    break;
+    case 14:
+    notes[14].awn()
+    break;
+    case 15:
+    notes[15].awn()
+    break;
+}
+
+});
+
+window.addEventListener('touchend', e => {
+switch(eval(e.target.parentNode.getAttribute('data-index'))) {
+
+    case 0:
+    notes[0].auf()
+    break;
+    case 1:
+    notes[1].auf()
+    break;
+    case 2:
+    notes[2].auf()
+    break;
+    case 3:
+    notes[3].auf()
+    break;
+    case 4:
+    notes[4].auf()
+    break;
+    case 5:
+    notes[5].auf()
+    break;
+    case 6:
+    notes[6].auf()
+    break;
+    case 7:
+    notes[7].auf()
+    break;
+    case 8:
+    notes[8].auf()
+    break;
+    case 9:
+    notes[9].auf()
+    break;
+    case 10:
+    notes[10].auf()
+    break;
+    case 11:
+    notes[11].auf()
+    break;
+    case 12:
+    notes[12].auf()
+    break;
+    case 13:
+    notes[13].auf()
+    break;
+    case 14:
+    notes[14].auf()
+    break;
+    case 15:
+    notes[15].auf()
+    break;
+}
+});
+
+const controls = document.getElementById('controls');
+const toggler = document.getElementById('toggler');
+
+let controlled = false;
+
+	toggler.addEventListener('click', () => {
+		if (controlled === false) {
+			controls.style.display = 'block';
+			controlled = true;
+		} else {
+			controls.style.display = 'none';	
+			controlled = false;
+		}
+	});
+
+
+const theCreators = document.getElementsByClassName('theCreators');
+const theNames = document.getElementsByClassName('theNames');
+const theScales = document.getElementsByClassName('theScales');
+const dbScaleArea = document.getElementById('dbScaleArea');
+
+	document.getElementById('getScales').addEventListener('click', () => {
+
+		fetch('/getScales')
+			.then(response => response.json())
+				.then(data => {
+					for (let i = 0; i < data.length; i++) {
+					let container = document.createElement('container');
+					let creatorElement = document.createElement('div');
+					let nameElement = document.createElement('div');			
+					let scaleElement = document.createElement('div');			
+
+					container.setAttribute('class', 'containers');
+					creatorElement.setAttribute('class', 'theCreators');
+					nameElement.setAttribute('class', 'theNames');
+					scaleElement.setAttribute('class', 'theScales');
+					scaleElement.setAttribute('data-indices', `${i}`);
+
+
+					creatorElement.append(data[i].theCreator);
+					nameElement.append(data[i].theName);
+					scaleElement.append(data[i].theScale.split(',').join(', '));
+
+					dbScaleArea.append(container);
+					container.append(creatorElement);
+					container.append(nameElement);
+					container.append(scaleElement);
+					}
+
+		});
+	});
+
+
+
+	dbScaleArea.addEventListener('click', e => {
+		let dataIndice = eval(e.target.getAttribute('data-indices'));
+		
+		let ray = theScales[dataIndice].textContent.split(',');
+
+		for (let i = 0; i < 16; i++) {
+			if (ray[i] != undefined) {
+				ratios[i].innerText = ray[i];
+				decimals[i].innerText = eval(ray[i]).toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+				frequencies[i].innerText = eval(eval(ray[i]) * stdPitch.value).toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+			}
+		}
+
+	})
+
+		stdPitch.addEventListener('change', () => {
+			for (let i = 0; i < 16; i++) {
+			if (frequencies[i].textContent != '') {
+				frequencies[i].innerText = eval(eval(ratios[i].textContent) * stdPitch.value).toPrecision(6).replace(/0+$/, '').replace(/\.$/, '');
+			}
+		}
+		});
+    </script>
+</html>

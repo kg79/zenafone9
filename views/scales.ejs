@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	:root {
+		--blush:#fa07ad;
+	}
+	body {
+		margin:0;
+	} h1 {
+		text-align:center;
+		font-family:'Dancing Script', cursive;
+		color:var(--blush);
+	}
+	table {
+		border-collapse:collapse;
+		margin:auto;
+
+	} td, th {
+		border:solid 1px black;
+	}
+
+	article {
+		
+	} div {
+		display:inline;
+		border:solid 1px black;
+	}
+</style>
+</head>
+<body>
+	<h1>harmonic scales</h1>
+
+
+	<table>
+	<th>creator</th><th>name</th><th>scale</th>
+		<% for (let i = 0; i < stuff.length; i++) { %>
+		<tr data-index='<%= i %>'>
+
+				<td><%= stuff[i].theCreator %></td>
+				<td><%= stuff[i].theName %></td>
+				<td class='theScales'><%= stuff[i].theScale %></td>
+			</tr>
+		<% } %>
+	</table>
+</body>
+<script>
+	const theScales = document.getElementsByClassName('theScales');
+
+	document.addEventListener('DOMContentLoaded', () => {
+		for (let i = 0; i < theScales.length; i++) {
+			theScales[i].innerText = theScales[i].textContent.split(',').join(', ');
+		}
+	});
+
+
+	//	document.cookie = `scaleCookie=${theScales[parseInt(e.target.parentNode.getAttribute('data-index'))].textContent}`;
+		
+
+
+</script>
+</html>

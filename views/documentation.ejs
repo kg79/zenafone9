@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	html, body {
+		margin:0;
+	} h3 {
+		text-align:center;
+		display:block;
+	} p {
+		text-indent:3em;
+		width:72vw;
+		margin:auto;
+		padding:1em;
+	} ol {
+		width:72vw;
+		margin:auto;
+	}
+</style>
+</head>
+<body>
+	<h3>Chapter One - History</h3>
+	<p>
+		My understanding of music theory begins in Ancient Greece, circa 500 BC. It's said that Pythagoras discovered harmonics
+		via the monochord, a one stringed instrument. By pressing the string at exactly 
+		1/2 the length, it produced apparently the same sound, only lower. <i>An octave lower</i>. He went on to press the string at 3/4 
+		the length, 2/3 the length, 3/5, etc. The theory became that any fraction, or ratio, produces a harmonic. Today this idea extends to 
+		multiplying fractions by a starting frequency measured in hertz. This came to be known as Just Intonation.
+	</p>
+	<p>
+		So ratios produce harmonics, such is music theory, and the rest as they say is history. But 
+		Just Intonation had some drawbacks. When you make an instrument using Just Intonation, it only creates 
+		one scale. As to what that scale should be was a constant dilemma. The gold standard was the Pythagorean scale, but it 
+		posed an unusual problem. The end of the scale didn't exactly meet the beginning of the next octave. There was 
+		a hole in it called the wolf interval. One reason for this was the Pythagoreans had very specific ideas about 
+		number theory, and everything was based on the interval 3/2, as it was deemed most consonant. Throughout time people have 
+		postulated many scales, and I believe all are valid given they suit a motif.  
+	</p>
+	<p>
+		I would be remiss not to mention that Just Intonation has all but fallen into obscurity compared to it's proposed alternative, 
+		musical temperament. Twelve-Tone Equal Temperament is by far the most common system in use today, and it functions by dividing 
+		an octave into 12 equal pieces. It sort of 'lived long enough to become the villain,' in that it's goal was to make it so we 
+		didn't have to play one scale, and now it's ubiquitous with instrumentation. 
+	</p>
+	<h3>Charpter 2 - Fundamentals for Physical Keyboard</h3>
+	<p>
+		On the bottom left are a list of numbered controls.
+		<ol>
+		<li>
+		Press begin. This is to initialize the audio context, and your consent 
+		to allow sound. 
+		</li>
+		<li>
+		Next is the generate ratios button with an integer input box. Pressing this will generate a list of harmonics. It's to give you an 
+		idea of what kind of notes you might want to add to your scale. You'll notice dragging the mouse over the ratios will emit the sound 
+		of that harmonic. The input box will adjust how many harmonics are generated. It doesn't generate that number, but ratios including 
+		a maximum of that number. 
+		</li>
+		<li>
+		Standard pitch, or concert pitch, is the starting frequency all the harmonics are based on. In modern American music it's 440hz, but it 
+		can really be anything. I wish to emphasize the 
+		number is entirely up to you. This flexibility is one of your greatest assets, though admittedly I myself tend to use 432hz for the sake of 
+		standardization and a feeble attempt to rein order from chaos. 
+		</li>
+		<li>
+			&star;
+			Position and ratio allow you to add harmonics to your scale, or <i>skeleton key</i> as I call it. The default note 
+			in the bottom right of the screen is position 0, ratio 1/1, decimal value of 1. Specify position 1, whatever ratio you want, and click the 			"add ratio" button. Then position 2, so on and so forth. I'd recommend keeping them in order from lowest to highest. 
+			If you can't think of any fractions off the top of your 
+			head, that's what "generate ratios" was for. You can look up scales online for ideas, or if you're really in a bind you can just select 
+			one of the scales already made. The replace ratio button as it's name implies will replace the specified position with the new 
+			accompanying ratio. Delete ratio will delete that position's contents, where ratio input is irrelevant. 
+		</li>
+		<li>
+		Automap will render the skeleton key onto the interface. If you want furthur configuration, or to change the contents of the keymaps 
+		interface tiles, use the up and down arrow keys. They will affect the last key that has been played, and scroll that tile to the next/previous 
+		value in the skeleton key (the list of positions & ratios in the bottom right screen.)
+		</li>
+		<li>
+		All of this would be frivolous and academic if you couldn't save your work at the end of a session, and share that work with everyone else. 
+		Name your scale, creator is effectively your user name, password is something you try not to forget, and submit. Update your existing scale 
+		by replicating the three inputs with new contents in the skeleton key. Get Scales will retrieve the scales already in the database. Clicking 
+		on the scale will map it to the skeleton key. You're then free to automap it, or manually scroll up and down using the arrow keys, remembering 
+		that it will scroll the last key pressed. 
+		</li>
+		</ol>
+		<p>
+		The main interace you'll notice resembles 40 keys from your physical keyboard. Each key tile has 5 values, from top down they are the 
+		keyboard key, fraction, decimal, frequency, and position in the skeleton key. 
+		</p>
+	</p>
+</body>
+<script>
+
+</script>
+</html>

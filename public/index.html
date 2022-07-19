@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <style>
+	:root {
+		--blush:#ff2185;
+	}
+            html, body {
+                background:black;
+		display:flex;
+		justify-content:center;
+		height:100vh;
+		align-items:center;
+		margin:0;
+		font-family:sans-serif;
+            } h1 {
+                font-family:'Dancing Script', cursive;
+		cursor:pointer;
+		color:var(--blush);
+		font-size:450%;
+		font-weight:normal;
+		text-align:center;
+	    } div {
+		color:white;	
+		text-align:center;
+	    }
+                            
+        </style>
+    </head>
+    <body>
+	<section>
+        	<h1>zenafone</h1>
+		<div>
+			 ... an online Just Intonation instrument... click the logo to proceed...
+		</div>
+
+	</section>
+    </body>
+    <script>
+	    document.getElementsByTagName('h1')[0].addEventListener('click', () => {
+
+		window.location.href = '/pivotPage';
+	    });
+    </script>
+</html>
